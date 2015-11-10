@@ -16,7 +16,14 @@ gem 'autoprefixer-rails', '5.2.1'
 gem 'slim'
 
 group :development, :test do
-	gem 'byebug'
-	gem 'web-console', '~> 2.0'
-	gem 'spring'
+  gem 'byebug'
+  gem 'web-console', '~> 2.0'
+  gem 'spring'
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'shoulda-matchers'
 end
