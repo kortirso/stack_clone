@@ -1,24 +1,23 @@
 RSpec.describe AnswersController, type: :controller do
-	let(:question) { create :question }
-
 	describe 'GET #new' do
-		before { get :new }
+        before { get :new }
 
-        it 'assigns a new question to @question' do
+        it 'assigns a new answer to @answer' do
             expect(assigns(:answer)).to be_a_new(Answer)
         end
 
         it 'renders new view' do
             expect(response).to render_template :new
         end
-	end
+    end
 
 	describe 'POST #create' do
-		let(:answer) { create :answer, question: question }
+		let(:question) { create :question }
+		let(:answer) { build :answer, question: question }
 
 		context 'with valid attributes' do
 			it 'saves the new answer in the DB' do
-				expect { post :create, answer: attributes_for(:answer), question_id: question }.to change(Question.answers, :count).by(1)
+				expect { post :create, answer: attributes_for(:answer), question_id: question }.to change(question.answers, :count).by(1)
 			end
 
 			it 'redirects to question show action' do
@@ -30,7 +29,7 @@ RSpec.describe AnswersController, type: :controller do
 
 		context 'with invalid attributes' do
 			it 'does not save the new answer in the DB' do
-				expect { post :create, answer: attributes_for(:invalid_answer), question_id: question }.to_not change(Question.answers, :count)
+				expect { post :create, answer: attributes_for(:invalid_answer), question_id: question }.to_not change(question.answers, :count)
 			end
 
 			it 're-render new view' do
