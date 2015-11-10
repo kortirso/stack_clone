@@ -1,5 +1,5 @@
 class Question < ActiveRecord::Base
-	validates :title, :body, presence: true
+  has_many :answers, dependent: :destroy
 
-	has_many :answers
+  validates :title, :body, presence: true
 end
