@@ -6,7 +6,7 @@ RSpec.describe QuestionsController, type: :controller do
 
             get :index
 
-            expect(assigns(:questions)).to match_array([question1, question2])
+            expect(assigns(:questions)).to match_array([question_1, question_2])
         end
         it 'renders index view' do
             get :index
