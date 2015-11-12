@@ -1,0 +1,15 @@
+h1= @question.title
+p= @question.body
+- if current_user && current_user.id == @question.user.id
+    p= link_to 'Delete question', question_path(@question), method: :delete, id: 'delete'
+h2 Answers
+- @question.answers.each do |answer|
+    p= answer.body
+    - if current_user && current_user.id == answer.user.id
+        p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'delete_answer'
+- if current_user
+    = form_for [@question, @answer] do |f|
+        p= f.label :body, value: 'New answer body'
+        p= f.text_field :body
+        p= f.hidden_field :question, value: @question.id
+        p= f.submit 'Answer'

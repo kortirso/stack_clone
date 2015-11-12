@@ -1,0 +1,35 @@
+doctype html
+html
+    head
+        title StackClone
+        = stylesheet_link_tag    'application', media: 'all'
+        = javascript_include_tag 'application'
+        = csrf_meta_tags
+    body
+        p= notice
+        = yield
+        .container
+            - if current_user
+                p= "Login as #{current_user.email}"
+                p= link_to 'Logoff', destroy_user_session_path, method: :delete, class: 'btn btn-sm btn-danger', id: 'destroy'
+            - else
+                p Authorization
+                .col-xs-12#login
+                    = simple_form_for(User.new, as: :user, url: session_path(:user)) do |f|
+                        .col-xs-4
+                            = f.input :email, autofocus: true, label: false
+                        .col-xs-4
+                            = f.input :password, autocomplete: 'off', label: false
+                        .col-xs-4
+                            = f.button :submit, 'Login', class: 'btn btn-primary', id: 'authorization'
+                .clearfix
+                .col-xs-12#signup
+                    = simple_form_for(User.new, as: :user, url: registration_path(:user)) do |f|
+                        .col-xs-3
+                            = f.input :email, required: true, label: false, placeholder: 'Email'
+                        .col-xs-3
+                            = f.input :password, required: true, label: false, placeholder: 'Password'
+                        .col-xs-3
+                            = f.input :password_confirmation, autocomplete: 'off', required: true, label: false, placeholder: 'Password Confirm'
+                        .col-xs-3
+                            =  f.button :submit, 'Sign Up', class: 'btn btn-primary', id: 'registration'
