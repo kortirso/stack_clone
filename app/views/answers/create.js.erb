@@ -1,0 +1,5 @@
+$('#notice').html("<%= @notice %>");
+<% if @answer.id %>
+	$('#answers').append("<%= j render @answer %> ");
+<% end %>
+$('#answer_body').val('');
