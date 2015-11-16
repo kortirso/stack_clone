@@ -1,4 +1,6 @@
-= simple_form_for @question do |f|
-    p= f.input :title
-    p= f.input :body
-    p= f.submit 'Ask'
+.col-xs-6
+    h2 Question's create form
+    = simple_form_for @question do |f|
+        p= f.input :title, placeholder: 'Choose question title'
+        p= f.input :body, placeholder: 'Enter questions'
+        p= f.submit 'Ask', class: 'btn btn-primary'
