@@ -90,7 +90,7 @@ RSpec.feature "Question management", :type => :feature do
                 fill_in 'answer_body', with: ''
                 click_on 'Answer'
 
-                expect(page).to have_content 'Error, answer doesnot create'
+                expect(page).to have_content "Error when create answer - Body can't be blank"
             end
         end
 

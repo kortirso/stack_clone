@@ -5,9 +5,7 @@ class AnswersController < ApplicationController
         @question = Question.find(params[:question_id])
         @answer = @question.answers.new(answer_params)
         @answer.user = current_user
-        unless @answer.save
-            @notice = 'Error, answer doesnot create'
-        end
+        @answer.save
     end
 
     def destroy
