@@ -1,0 +1,7 @@
+$('#notice').html("");
+<% if @answer.id %>
+	$('#answers').append("<%= j render @answer %> ");
+<% else %>
+	$('#notice').html("Error when create answer - <%= @answer.errors.full_messages[0] %>");
+<% end %>
+$('#answer_body').val('');

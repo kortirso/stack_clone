@@ -3,13 +3,9 @@ class AnswersController < ApplicationController
 
     def create
         @question = Question.find(params[:question_id])
-        answer = @question.answers.new(answer_params)
-        answer.user = current_user
-        if answer.save
-            redirect_to @question, notice: 'Answer save'
-        else
-            redirect_to @question, notice: 'Error, answer doesnot save'
-        end
+        @answer = @question.answers.new(answer_params)
+        @answer.user = current_user
+        @answer.save
     end
 
     def destroy

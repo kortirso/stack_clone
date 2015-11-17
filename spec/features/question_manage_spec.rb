@@ -38,15 +38,14 @@ RSpec.feature "Question management", :type => :feature do
     end
 
     describe 'Logged user' do
-        let!(:user_1) { create(:user) }
-        let!(:user_2) { create(:user) }
+        let(:user_1) { create :user }
+        let(:user_2) { create :user }
         let!(:question_1) { create :question, user: user_1 }
         let!(:question_2) { create :question, user: user_2 }
         let!(:answer_1) { create :answer, question: question_1, user: user_1 }
         let!(:answer_2) { create :answer, question: question_2, user: user_2 }
-        let(:new_answer) { build :answer, user: user_1 }
         before do
-            login_as(user_1, scope: :user)
+            sign_in user_1
         end
 
         context 'can try creates a question' do
@@ -74,20 +73,24 @@ RSpec.feature "Question management", :type => :feature do
         end
 
         context 'can try answer to question' do
-            before { visit question_path(question_1) }
+            it 'with valid data', js: true do
+                visit question_path(question_1)
 
-            it 'with valid data' do
-                fill_in 'answer_body', with: new_answer.body
+                fill_in 'answer_body', with: 'testing'
                 click_on 'Answer'
 
-                expect(page).to have_content new_answer.body
-                expect(page).to have_content 'Answer save'
+                within '#answers' do
+                    expect(page).to have_content 'testing'
+                end
             end
 
-            it 'with invalid data' do
+            it 'with invalid data', js: true do
+                visit question_path(question_1)
+
+                fill_in 'answer_body', with: ''
                 click_on 'Answer'
 
-                expect(page).to have_content 'Error, answer doesnot save'
+                expect(page).to have_content "Error when create answer"
             end
         end
 

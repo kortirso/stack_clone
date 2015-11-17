@@ -1,5 +1,9 @@
+h1 Hello, dear friend!
+p Here you can find answer for any question or ask your own question.
 - if current_user
-    = link_to 'Create question', new_question_path
+    p= link_to 'Create question', new_question_path, class: 'btn btn-primary'
+h2 List of questions
 - @questions.each do |question|
-    h2= question.title
-    p= question.body
+    .question
+        h2= link_to question.title, question_path(question)
+        p= question.body

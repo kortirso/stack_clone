@@ -1,0 +1,68 @@
+@import url(https://fonts.googleapis.com/css?family=Ubuntu&subset=latin,cyrillic);
+
+* {
+	font-family: 'Ubuntu', sans-serif;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+	width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+}
+
+body::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	background: rgba(217,217,217,0.8);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+#root_path_button {
+	margin-top: 5px;
+	padding: 5px;
+
+	a {
+		color: #444;
+		text-decoration: none;
+
+		&:hover {
+			color: #444;
+			text-decoration: none;
+		}
+	}
+}
+
+#notice {
+	display: inline-block;
+	background: #d9534f;
+	border-radius: 5px;
+	padding: 0 10px;
+	color: #FFF;
+	margin-bottom: 15px;
+}
+
+#answers {
+	margin: 30px 0;
+
+	.answer {
+		margin: 20px 0;
+		border-bottom: 2px solid #888;
+		padding-bottom: 15px;
+	}
+}
+
+#answer_body {
+	width: 400px;
+}
