@@ -2,6 +2,8 @@ $('#notice').html("");
 <% if @answer.id %>
 	$('#answers').append("<%= j render @answer %> ");
 <% else %>
-	$('#notice').html("Error when create answer - <%= @answer.errors.full_messages[0] %>");
+	<%- noticer = '' %>
+	<%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
+	$('#notice').html("Error when create answer - <%= noticer %>");
 <% end %>
 $('#answer_body').val('');

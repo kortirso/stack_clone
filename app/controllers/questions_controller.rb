@@ -20,7 +20,9 @@ class QuestionsController < ApplicationController
         if @question.save
             redirect_to @question, notice: 'Question save'
         else
-            redirect_to questions_path, notice: 'Error, question doesnot save'
+            noticer = ''
+            @question.errors.full_messages.each { |message| noticer += "#{message} " }
+            redirect_to questions_path, notice: "Error, question doesnot save - #{noticer}"
         end
     end
 
