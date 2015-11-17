@@ -1,0 +1,8 @@
+<% if @answer.errors.present? %>
+    <%- noticer = '' %>
+    <%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
+    $('#notice').html("Error when update question - <%= noticer %>");
+<% else %>
+    $('#answer-<%= @answer.id %>').hide();
+    $('#notice').html("Answer delete");
+<% end %>

@@ -1,0 +1,6 @@
+<% if @notice %>
+	$('#notice').html("<%= @notice %>");
+<% else %>
+	$('#answers').html("");
+	$('#answers').html('<%= j render 'questions/answer' %>');
+<% end %>

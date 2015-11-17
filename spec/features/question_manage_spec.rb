@@ -1,3 +1,5 @@
+require_relative 'feature_helper'
+
 RSpec.feature "Question management", :type => :feature do
     describe 'Unauthorized user' do
         let!(:question) { create :question }
@@ -103,7 +105,7 @@ RSpec.feature "Question management", :type => :feature do
                 expect(page).to have_content 'Question delete'
             end
 
-            it 'answer' do
+            it 'answer', js: true do
                 click_on 'Delete answer'
 
                 expect(page).to have_content 'Answer delete'

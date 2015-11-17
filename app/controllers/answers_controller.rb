@@ -9,17 +9,30 @@ class AnswersController < ApplicationController
     end
 
     def destroy
-        answer = Answer.find(params[:id])
-        @question = answer.question
-        if answer.user.id == current_user.id && answer.destroy
-            redirect_to @question, notice: 'Answer delete'
+        @answer = Answer.find(params[:id])
+        @answer.destroy if @answer.user.id == current_user.id
+    end
+
+    def update
+        @answer = Answer.find(params[:id])
+        @answer.update(answer_params) if @answer.user.id == current_user.id
+    end
+
+    def best
+        @question = Question.find(params[:question_id])
+        if @question.user.id == current_user.id
+            old_best = @question.answers.where(best: true).first
+            old_best.update_attributes(best: false) if old_best
+            @answer = Answer.find(params[:id])
+            @answer.best = true
+            @answer.save!
         else
-            redirect_to @question, notice: 'Error, answer doesnot delete'
+            @notice = 'You cant set best answer'
         end
     end
 
     private
     def answer_params
-        params.require(:answer).permit(:body, :question_id, :user_id)
+        params.require(:answer).permit(:body, :question_id, :user_id, :best)
     end
 end

@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-    before_action :authenticate_user!, only: [:new, :create, :destroy]
+    before_action :authenticate_user!, except: [:index, :show]
 
     def index
         @questions = Question.all
@@ -24,6 +24,11 @@ class QuestionsController < ApplicationController
             @question.errors.full_messages.each { |message| noticer += "#{message} " }
             redirect_to questions_path, notice: "Error, question doesnot save - #{noticer}"
         end
+    end
+
+    def update
+        @question = Question.find(params[:id])
+        @question.update(question_params) if @question.user.id == current_user.id
     end
 
     def destroy

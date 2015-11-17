@@ -70,7 +70,51 @@ RSpec.describe QuestionsController, type: :controller do
         end
     end
 
-    describe 'POST #delete' do
+    describe 'PATCH #update' do
+        context 'Unauthorized user' do
+            let!(:question) { create :question }
+
+            it 'cant change question' do
+                expect { patch :update, id: question, question: attributes_for(:question), format: :js }.to_not change{question}
+            end
+        end
+
+        context 'Authorized user can try' do
+            sign_in_user
+            let!(:question_1) { create :question, user: @current_user }
+            let!(:question_2) { create :question }
+
+            context 'change own question' do
+                it 'assigns the requested question to @question' do
+                    patch :update, id: question_1, question: attributes_for(:question), format: :js
+
+                    expect(assigns(:question)).to eq question_1
+                end
+
+                it 'with valid attributes changes question' do
+                    patch :update, id: question_1, question: { title: 'new title', body: 'new body' }, format: :js
+                    question_1.reload
+
+                    expect(question_1.title).to eq 'new title'
+                    expect(question_1.body).to eq 'new body'
+                end
+
+                it 'with invalid attributes doesnt changes question' do
+                    expect { patch :update, id: question_1, question: { title: '' }, format: :js }.to_not change(question_1, :title)
+                    expect { patch :update, id: question_1, question: { body: '' }, format: :js }.to_not change(question_1, :body)
+                end
+            end
+
+            context 'change question of other user' do
+                it 'but not update question' do
+                    expect { patch :update, id: question_2, question: { title: 'new title' }, format: :js }.to_not change(question_2, :title)
+                    expect { patch :update, id: question_2, question: { body: 'new body' }, format: :js }.to_not change(question_2, :body)
+                end
+            end
+        end
+    end
+
+    describe 'POST #destroy' do
         sign_in_user
         let!(:question_1) { create :question, user: @current_user }
         let!(:question_2) { create :question }

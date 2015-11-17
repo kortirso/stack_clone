@@ -1,0 +1,9 @@
+$('.edit_question').hide();
+$('#edit_question').show();
+<% if @question.errors.present? %>
+    <%- noticer = '' %>
+    <%- @question.errors.full_messages.each { |message| noticer += "#{message} " } %>
+    $('#notice').html("Error when update question - <%= noticer %>");
+<% else %>
+    $('#question').html('<%= j render 'questions/question' %>');
+<% end %>
