@@ -97,7 +97,7 @@ RSpec.describe AnswersController, type: :controller do
             let!(:answer) { create :answer, question: question, best: false }
 
             it 'cant set best answers' do
-                expect { get :best, id: answer, question_id: question, format: :js }.to_not change{ question.answers.where(best: true) }
+                expect { get :best, id: answer, question_id: question, format: :js }.to_not change(question.answers.where(best: true), :count)
             end
         end
 
@@ -105,15 +105,16 @@ RSpec.describe AnswersController, type: :controller do
             sign_in_user
             let!(:own_question) { create :question, user: @current_user }
             let!(:answer_1) { create :answer, question: own_question, best: false }
+            let!(:answer_2) { create :answer, question: own_question, best: true }
             let!(:other_question) { create :question }
-            let!(:answer_2) { create :answer, question: other_question, best: false }
+            let!(:answer_3) { create :answer, question: other_question, best: false }
 
             it 'can set best answer for his question' do
-                expect { xhr :get, :best, id: answer_1, question_id: own_question, format: :js }.to change{ own_question.answers.where(best: true).first }
+                expect { xhr :get, :best, id: answer_1, question_id: own_question, format: :js }.to_not change(own_question.answers.where(best: true), :count)
             end
 
             it 'cant set best answer for other user question' do
-                expect { xhr :get, :best, id: answer_2, question_id: other_question, format: :js }.to_not change{ other_question.answers.where(best: true).first }
+                expect { xhr :get, :best, id: answer_2, question_id: other_question, format: :js }.to_not change(other_question.answers.where(best: true), :count)
             end
         end
     end

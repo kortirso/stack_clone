@@ -9,12 +9,12 @@ $(function() {
 		e.preventDefault();
 		$('.edit_question').hide();
 		$('#edit_question').show();
-	})
+	});
 
 	$('.edit_answer_btn').click(function(e) {
 		e.preventDefault();
 		var clickId = this.id;
-		$('#edit_answer_' + clickId).show();
+		$('form#edit_answer_' + clickId).show();
 		$(this).hide();
 	});
 
@@ -22,5 +22,5 @@ $(function() {
 		e.preventDefault();
 		$('.edit_answer').hide();
 		$(this).parent('form').parent('.answer').children('.edit_answer_btn').show();
-	})
+	});
 });
