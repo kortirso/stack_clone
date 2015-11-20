@@ -21,10 +21,7 @@ class AnswersController < ApplicationController
     def best
         @question = Question.find(params[:question_id])
         if @question.user.id == current_user.id
-            Answer.transaction do
-                @question.answers.set_worst
-                @answer = Answer.find(params[:id]).set_best
-            end
+            @question.answers.set_best(params[:id])
         else
             @notice = 'You cant set best answer'
         end

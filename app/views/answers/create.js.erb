@@ -1,18 +1,18 @@
 $('#notice').html("");
 <% if @answer.id %>
-	$('#answers').append("<%= j render @answer %> ");
-	$('.edit_answer_btn').click(function(e) {
+	$('#answers').append("<%= j render @answer %>");
+	$('#<%= @answer.id %>').click(function(e) {
 		e.preventDefault();
 		var clickId = this.id;
 		$('form#edit_answer_' + clickId).show();
 		$(this).hide();
 	});
-	$('.cancel_edit_answer').click(function(e) {
+	$('#answer-<%= @answer.id %> .cancel_edit_answer').click(function(e) {
 		e.preventDefault();
 		$('.edit_answer').hide();
 		$(this).parent('form').parent('.answer').children('.edit_answer_btn').show();
 	});
-	$('#answer_body').val('');
+	$('input#answer_body').val('');
 <% else %>
 	<%- noticer = '' %>
 	<%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
