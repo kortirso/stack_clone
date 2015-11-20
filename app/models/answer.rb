@@ -4,10 +4,10 @@ class Answer < ActiveRecord::Base
 
     validates :body, :question_id, :user_id, presence: true
 
-    def self.set_best(best)
+    def set_best
         Answer.transaction do
-            where(best: true).update_all(best: false)
-            find(best).update_attributes(best: true)
+            question.answers.where(best: true).update_all(best: false)
+            update_attributes(best: true)
         end
     end
 end

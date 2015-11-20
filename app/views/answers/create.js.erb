@@ -1,20 +1,9 @@
 $('#notice').html("");
 <% if @answer.id %>
-	$('#answers').append("<%= j render @answer %>");
-	$('#<%= @answer.id %>').click(function(e) {
-		e.preventDefault();
-		var clickId = this.id;
-		$('form#edit_answer_' + clickId).show();
-		$(this).hide();
-	});
-	$('#answer-<%= @answer.id %> .cancel_edit_answer').click(function(e) {
-		e.preventDefault();
-		$('.edit_answer').hide();
-		$(this).parent('form').parent('.answer').children('.edit_answer_btn').show();
-	});
-	$('input#answer_body').val('');
+    $('#answers').append("<%= j render @answer %>");
+    $('input#answer_body').val('');
 <% else %>
-	<%- noticer = '' %>
-	<%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
-	$('#notice').html("Error when create answer - <%= noticer %>");
+    <%- noticer = '' %>
+    <%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
+    $('#notice').html("Error when create answer - <%= noticer %>");
 <% end %>

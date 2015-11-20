@@ -33,7 +33,7 @@ class QuestionsController < ApplicationController
 
     def destroy
         @question = Question.find(params[:id])
-        if @question.user.id == current_user.id && @question.destroy
+        if @question.user_id == current_user.id && @question.destroy
             redirect_to questions_path, notice: 'Question delete'
         else
             redirect_to questions_path, notice: 'Error, question doesnot delete'

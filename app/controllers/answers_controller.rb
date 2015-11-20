@@ -10,18 +10,18 @@ class AnswersController < ApplicationController
 
     def destroy
         @answer = Answer.find(params[:id])
-        @answer.destroy if @answer.user.id == current_user.id
+        @answer.destroy if @answer.user_id == current_user.id
     end
 
     def update
         @answer = Answer.find(params[:id])
-        @answer.update(answer_params) if @answer.user.id == current_user.id
+        @answer.update(answer_params) if @answer.user_id == current_user.id
     end
 
     def best
         @question = Question.find(params[:question_id])
-        if @question.user.id == current_user.id
-            @question.answers.set_best(params[:id])
+        if @question.user_id == current_user.id
+            Answer.find(params[:id]).set_best
         else
             @notice = 'You cant set best answer'
         end

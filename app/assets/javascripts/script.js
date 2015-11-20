@@ -11,14 +11,14 @@ $(function() {
         $('#edit_question').show();
     });
 
-    $('.edit_answer_btn').click(function(e) {
+    $('#answers').on('click', '.edit_answer_btn', function(e) {
         e.preventDefault();
         var clickId = this.id;
         $('form#edit_answer_' + clickId).show();
         $(this).hide();
     });
 
-    $('.cancel_edit_answer').click(function(e) {
+    $('#answers').on('click', '.cancel_edit_answer', function(e) {
         e.preventDefault();
         $('.edit_answer').hide();
         $(this).parent('form').parent('.answer').children('.edit_answer_btn').show();
