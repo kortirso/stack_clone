@@ -1,12 +1,12 @@
 class QuestionsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
+    before_action :question_find, only: [:show, :update, :destroy]
 
     def index
         @questions = Question.all
     end
 
     def show
-        @question = Question.find(params[:id])
         @answer = Answer.new
     end
 
@@ -27,12 +27,10 @@ class QuestionsController < ApplicationController
     end
 
     def update
-        @question = Question.find(params[:id])
         @question.update(question_params) if @question.user.id == current_user.id
     end
 
     def destroy
-        @question = Question.find(params[:id])
         if @question.user_id == current_user.id && @question.destroy
             redirect_to questions_path, notice: 'Question delete'
         else
@@ -41,6 +39,10 @@ class QuestionsController < ApplicationController
     end
 
     private
+    def question_find
+        @question = Question.find(params[:id])
+    end
+
     def question_params
         params.require(:question).permit(:title, :body, :user_id)
     end

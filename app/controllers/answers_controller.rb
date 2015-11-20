@@ -1,33 +1,39 @@
 class AnswersController < ApplicationController
     before_action :authenticate_user!
+    before_action :answer_find, only: [:destroy, :update, :best]
+    before_action :question_find, only: [:create, :best]
 
     def create
-        @question = Question.find(params[:question_id])
         @answer = @question.answers.new(answer_params)
         @answer.user = current_user
         @answer.save
     end
 
     def destroy
-        @answer = Answer.find(params[:id])
         @answer.destroy if @answer.user_id == current_user.id
     end
 
     def update
-        @answer = Answer.find(params[:id])
         @answer.update(answer_params) if @answer.user_id == current_user.id
     end
 
     def best
-        @question = Question.find(params[:question_id])
         if @question.user_id == current_user.id
-            Answer.find(params[:id]).set_best
+            @answer.set_best
         else
             @notice = 'You cant set best answer'
         end
     end
 
     private
+    def answer_find
+        @answer = Answer.find(params[:id])
+    end
+
+    def question_find
+        @question = Question.find(params[:question_id])
+    end
+
     def answer_params
         params.require(:answer).permit(:body, :question_id, :user_id, :best)
     end
