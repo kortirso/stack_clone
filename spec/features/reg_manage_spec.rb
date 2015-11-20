@@ -1,3 +1,5 @@
+require_relative 'feature_helper'
+
 RSpec.feature "Registration management", :type => :feature do
     describe 'Unauthenticated user can' do
         context 'try sign up' do

@@ -1,0 +1,9 @@
+$('#edit_answer_<%= @answer.id %>').hide();
+$('#<%= @answer.id %>').show();
+<% if @answer.errors.present? %>
+    <%- noticer = '' %>
+    <%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
+    $('#notice').html("Error when update answer - <%= noticer %>");
+<% else %>
+    $('#answer-<%= @answer.id %>').children('.answer_body').html('<%= @answer.body %>');
+<% end %>

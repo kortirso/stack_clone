@@ -1,3 +1,3 @@
 h4 Answers for this question
-- @question.answers.each do |answer|
-    .answer= render partial: 'answers/answer', locals: { answer: answer }
+- @question.answers.order(best: :desc).each do |answer|
+    = render partial: 'answers/answer', locals: { answer: answer }

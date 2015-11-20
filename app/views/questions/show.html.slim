@@ -1,7 +1,14 @@
-h2= @question.title
-p= @question.body
+#question
+	= render 'question'
+p
+	= simple_form_for @question, remote: true do |f|
+		= f.input :title
+		= f.input :body
+		= f.submit 'Save', class: 'btn btn-default'
+		= link_to 'Cancel', '', id: 'cancel_edit_question', class: 'btn btn-default'
 - if current_user && current_user.id == @question.user.id
     p= link_to 'Delete question', question_path(@question), method: :delete, id: 'delete', class: 'btn btn-danger'
+    p= link_to 'Edit question', '', id: 'edit_question', class: 'btn btn-warning'
 #answers
     = render 'answer'
 - if current_user

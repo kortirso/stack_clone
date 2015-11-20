@@ -1,9 +1,9 @@
 $('#notice').html("");
 <% if @answer.id %>
-	$('#answers').append("<%= j render @answer %> ");
+    $('#answers').append("<%= j render @answer %>");
+    $('input#answer_body').val('');
 <% else %>
-	<%- noticer = '' %>
-	<%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
-	$('#notice').html("Error when create answer - <%= noticer %>");
+    <%- noticer = '' %>
+    <%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
+    $('#notice').html("Error when create answer - <%= noticer %>");
 <% end %>
-$('#answer_body').val('');
