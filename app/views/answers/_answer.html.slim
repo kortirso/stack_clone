@@ -2,9 +2,16 @@
     - if answer.best
         p#best_answer Best answer!
     p.answer_body= answer.body
-    p
+    .attachments
+        ul
+            - answer.attachments.each do |attachment|
+                = render 'answers/attachment', attachment: attachment, answer: answer
+    p.edit-form
         = simple_form_for [@question, answer], remote: true do |f|
             = f.input :body
+            p= f.simple_fields_for :attachments do |attachment|
+                = render 'attachments/attachment_fields', f: attachment
+            .links= link_to_add_association 'Add file', f, :attachments, partial: 'attachments/attachment_fields'
             = f.submit 'Save', class: 'btn btn-default'
             = link_to 'Cancel', '', class: 'cancel_edit_answer btn btn-default'
     - if current_user && current_user.id == answer.user_id

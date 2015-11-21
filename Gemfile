@@ -16,6 +16,9 @@ gem 'autoprefixer-rails', '5.2.1'
 gem 'slim'
 gem 'devise'
 gem 'simple_form'
+gem 'carrierwave'
+gem 'remotipart'
+gem "cocoon"
 
 group :development, :test do
   gem 'byebug'

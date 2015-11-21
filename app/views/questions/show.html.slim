@@ -1,19 +1,13 @@
 #question
-	= render 'question'
-p
-	= simple_form_for @question, remote: true do |f|
-		= f.input :title
-		= f.input :body
-		= f.submit 'Save', class: 'btn btn-default'
-		= link_to 'Cancel', '', id: 'cancel_edit_question', class: 'btn btn-default'
-- if current_user && current_user.id == @question.user.id
-    p= link_to 'Delete question', question_path(@question), method: :delete, id: 'delete', class: 'btn btn-danger'
-    p= link_to 'Edit question', '', id: 'edit_question', class: 'btn btn-warning'
+    = render 'question'
 #answers
     = render 'answer'
 - if current_user
-	p Put your answer for this question
-    = form_for [@question, @answer], remote: true do |f|
+    p Put your answer for this question
+    = simple_form_for [@question, @answer], remote: true do |f|
         p= f.text_field :body
         p= f.hidden_field :question_id, value: @question.id
+        p= f.simple_fields_for :attachments do |attachment|
+             = render 'attachments/attachment_fields', f: attachment
+        .links= link_to_add_association 'Add file', f, :attachments, partial: 'attachments/attachment_fields'
         p= f.submit 'Answer', class: 'btn btn-default'

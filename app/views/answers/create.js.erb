@@ -1,7 +1,11 @@
 $('#notice').html("");
 <% if @answer.id %>
-    $('#answers').append("<%= j render @answer %>");
-    $('input#answer_body').val('');
+    <% if remotipart_submitted? %>
+        $('#answers').append("<%=  j "#{render(@answer)}" %>");
+    <% else %>
+        $('#answers').append("<%=  j render(@answer) %>");
+    <% end %>
+    $('#new_answer #answer_body').val('');
 <% else %>
     <%- noticer = '' %>
     <%- @answer.errors.full_messages.each { |message| noticer += "#{message} " } %>
