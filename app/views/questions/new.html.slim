@@ -3,4 +3,8 @@
     = simple_form_for @question do |f|
         p= f.input :title, placeholder: 'Choose question title'
         p= f.input :body, placeholder: 'Enter questions'
+        p= "Attach files"
+        p= f.simple_fields_for :attachments do |attach|
+            = render 'attachments/attachment_fields', f: attach
+        .links= link_to_add_association 'Add file', f, :attachments, partial: 'attachments/attachment_fields'
         p= f.submit 'Ask', class: 'btn btn-primary'

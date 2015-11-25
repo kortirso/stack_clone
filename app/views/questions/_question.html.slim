@@ -1,2 +1,20 @@
 h2= @question.title
 p= @question.body
+.attachments
+    ul
+        - @question.attachments.each do |attachment|
+            - unless attachment.id.nil?
+                li id="attach-#{attachment.id}"
+                    = link_to attachment.file.identifier, attachment.file.url
+p
+    = simple_form_for @question, remote: true do |f|
+        = f.input :title
+        = f.input :body
+        p= f.simple_fields_for :attachments do |attachment|
+             = render 'attachments/attachment_fields', f: attachment
+        .links= link_to_add_association 'Add file', f, :attachments, partial: 'attachments/attachment_fields'
+        = f.submit 'Save', class: 'btn btn-default'
+        = link_to 'Cancel', '', id: 'cancel_edit_question', class: 'btn btn-default'
+- if current_user && current_user.id == @question.user.id
+    p= link_to 'Delete question', question_path(@question), method: :delete, id: 'delete', class: 'btn btn-danger'
+    p= link_to 'Edit question', '', id: 'edit_question', class: 'btn btn-warning'

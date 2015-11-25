@@ -1,0 +1,7 @@
+.nested-fields
+    - unless f.object.id.nil?
+        = f.object.file.identifier
+    - else
+        = f.label :file
+        = f.file_field :file, label: 'File'
+    = link_to_remove_association "Remove file", f

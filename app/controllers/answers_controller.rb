@@ -14,15 +14,15 @@ class AnswersController < ApplicationController
     end
 
     def update
-        @answer.update(answer_params) if @answer.user_id == current_user.id
+        if @answer.user_id == current_user.id
+            @answer.attachments.each { |a| a.save! }
+            @answer.update(answer_params)
+            @question = @answer.question
+        end
     end
 
     def best
-        if @question.user_id == current_user.id
-            @answer.set_best
-        else
-            @notice = 'You cant set best answer'
-        end
+        @question.user_id == current_user.id ? @answer.set_best : @notice = 'You cant set best answer'
     end
 
     private
@@ -35,6 +35,6 @@ class AnswersController < ApplicationController
     end
 
     def answer_params
-        params.require(:answer).permit(:body, :question_id, :user_id, :best)
+        params.require(:answer).permit(:body, :question_id, :user_id, :best, attachments_attributes: [:file, :id, :_destroy])
     end
 end

@@ -78,3 +78,16 @@ body::-webkit-scrollbar-thumb {
         }
     }
 }
+
+.remove_question_attachment, .remove_answer_attachment {
+    margin: 0 5px;
+    border: 1px solid #cd0000;
+    border-radius: 50%;
+    padding: 0 3px;
+    color: #cd0000;
+
+    &:hover {
+        text-decoration: none;
+        color: #cd0000;
+    }
+}

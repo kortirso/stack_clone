@@ -9,4 +9,12 @@ FactoryGirl.define do
         body  nil
         association :user
     end
+    factory :question_with_attachment, class: 'Question' do
+        title "Title"
+        body "Body"
+        association :user
+        after(:create) do |question|
+            question.attachments.create(attributes_for(:attachment))
+        end
+    end
 end
