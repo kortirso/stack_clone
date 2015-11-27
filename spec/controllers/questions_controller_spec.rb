@@ -151,4 +151,116 @@ RSpec.describe QuestionsController, type: :controller do
             end
         end
     end
+
+    describe 'POST #vote_plus' do
+        context 'Unauthorized user' do
+            let(:question) { create :question }
+
+            it 'cant vote for question' do
+                expect { post :vote_plus, id: question }.to_not change(Vote, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+            let!(:question) { create :question, user: @current_user }
+            let!(:other_question) { create :question }
+
+            it 'can vote for other_question' do
+                expect { post :vote_plus, id: other_question }.to change(other_question.votes, :count)
+            end
+
+            it 'and other_question has votes sum' do
+                post :vote_plus, id: other_question
+
+                expect(other_question.votes_calc).to eq 1
+            end
+
+            it 'but he cant vote twice' do
+                create :vote, voteable: other_question, user: @current_user
+                post :vote_plus, id: other_question
+
+                expect(other_question.votes_calc).to eq 1
+            end
+
+            it 'cant vote for his question' do
+                expect { post :vote_plus, id: question }.to_not change(question.votes, :count)
+            end
+        end
+    end
+
+    describe 'POST #vote_minus' do
+        context 'Unauthorized user' do
+            let!(:question) { create :question }
+
+            it 'cant vote for answer' do
+                expect { post :vote_minus, id: question }.to_not change(Vote, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+            let!(:question) { create :question, user: @current_user }
+            let!(:other_question) { create :question }
+
+            it 'can vote for question' do
+                expect { post :vote_minus, id: other_question }.to change(other_question.votes, :count)
+            end
+
+            it 'and other_question has votes sum' do
+                post :vote_minus, id: other_question
+
+                expect(other_question.votes_calc).to eq -1
+            end
+
+            it 'but he cant vote twice' do
+                create :vote, voteable: other_question, user: @current_user
+                post :vote_minus, id: other_question
+
+                expect(other_question.votes_calc).to eq -1
+            end
+
+            it 'cant vote for his question' do
+                expect { post :vote_minus, id: question }.to_not change(Vote, :count)
+            end
+        end
+    end
+
+    describe 'POST #devote' do
+        context 'Unauthorized user' do
+            let!(:question) { create :question }
+
+            it 'cant devote question' do
+                expect { post :devote, id: question }.to_not change(Vote, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+            let!(:question) { create :question }
+            let!(:other_question) { create :question }
+            let!(:vote) { create :vote, voteable: question, user: @current_user}
+
+            it 'can devote for question with his vote' do
+                expect { post :devote, id: question }.to change(question.votes, :count)
+            end
+
+            it 'and question has zero votes sum' do
+                post :devote, id: question
+
+                expect(question.votes_calc).to eq 0
+            end
+
+            it 'and then vote one more time' do
+                post :devote, id: question
+                post :vote_plus, id: question, user: @current_user
+
+                expect(question.votes_calc).to eq 1
+            end
+
+            it 'cant devote for question without his vote' do
+                expect { post :devote, id: other_question }.to_not change(Vote, :count)
+            end
+        end
+    end
 end

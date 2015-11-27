@@ -23,4 +23,16 @@ $(function() {
         $('.edit_answer').hide();
         $(this).parent('form').parent('.answer').children('.edit_answer_btn').show();
     });
+
+    $('#question').bind('ajax:success', function(e, data, status, xhr) {
+        var response;
+        response = $.parseJSON(xhr.responseText);
+        return $('#question .votes_block').html(response.message);
+    });
+
+    $('#answers').bind('ajax:success', function(e, data, status, xhr) {
+        var response;
+        response = $.parseJSON(xhr.responseText);
+        return $('#answer-' + response.voted_id + ' .votes_block').html(response.message);
+    });
 });

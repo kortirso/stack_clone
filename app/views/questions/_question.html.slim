@@ -6,6 +6,8 @@ p= @question.body
             - unless attachment.id.nil?
                 li id="attach-#{attachment.id}"
                     = link_to attachment.file.identifier, attachment.file.url
+.votes_block
+    = render partial: 'votes/votes_block', locals: { voted_object: @question }
 p
     = simple_form_for @question, remote: true do |f|
         = f.input :title
