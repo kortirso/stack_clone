@@ -6,8 +6,8 @@ $('#<%= @answer.id %>').show();
     $('#notice').html("Error when update answer - <%= noticer %>");
 <% else %>
     <% if remotipart_submitted? %>
-        $('#answer-<%= @answer.id %>').html('<%= j "#{render partial: @answer, answer: @answer }" %>');
+        $('#answers-<%= @answer.id %>').html('<%= j "#{render(partial: @answer, locals: { answer: @answer, visibility: true }) }" %>');
     <% else %>
-        $('#answer-<%= @answer.id %>').html('<%= j render partial: @answer, answer: @answer %>' );
+        $('#answers-<%= @answer.id %>').html('<%= j render(partial: @answer, locals: { answer: @answer, visibility: true }) %>' );
     <% end %>
 <% end %>

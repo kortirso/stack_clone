@@ -3,7 +3,10 @@ p Here you can find answer for any question or ask your own question.
 - if current_user
     p= link_to 'Create question', new_question_path, class: 'btn btn-primary'
 h2 List of questions
-- @questions.each do |question|
-    .question
-        h2= link_to question.title, question_path(question)
-        p= question.body
+#questions
+    - @questions.each do |question|
+        .question
+            h2= link_to question.title, question_path(question)
+            p= question.body
+
+= subscribe_to "/questions"

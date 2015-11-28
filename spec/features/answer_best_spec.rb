@@ -37,19 +37,19 @@ RSpec.feature "Set best answer", :type => :feature do
                 visit question_path(question)
                 click_on "set_best_#{answer_1.id}"
 
-                expect(page).to_not have_css "#answers .answer:nth-child(2) .best_button"
+                expect(page).to_not have_css "#answers div:nth-child(2) .best_button"
             end
 
             it 'and this best answer would have first place answer', js: true do
                 visit question_path(question)
                 click_on "set_best_#{answer_2.id}"
 
-                expect(page).to have_css "#answers .answer:nth-child(2) #best_answer"
-                expect(page).to have_css "#answers .answer:nth-child(2)#answer-#{answer_2.id}"
+                expect(page).to have_css "#answers div:nth-child(2) .answer #best_answer"
+                expect(page).to have_css "#answers div:nth-child(2) .answer#answer-#{answer_2.id}"
 
                 click_on "set_best_#{answer_1.id}"
 
-                expect(page).to have_css "#answers .answer:nth-child(2)#answer-#{answer_1.id}"
+                expect(page).to have_css "#answers div:nth-child(2) .answer#answer-#{answer_1.id}"
             end
         end
 

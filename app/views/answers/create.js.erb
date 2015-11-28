@@ -1,9 +1,9 @@
 $('#notice').html("");
 <% if @answer.id %>
     <% if remotipart_submitted? %>
-        $('#answers').append("<%=  j "#{render(@answer)}" %>");
+        $('#answers').append('<%= j "#{render(partial: @answer, locals: { answer: @answer, visibility: true }) }" %>');
     <% else %>
-        $('#answers').append("<%=  j render(@answer) %>");
+        $('#answers').append('<%= j render(partial: @answer, locals: { answer: @answer, visibility: true }) %>' );
     <% end %>
     $('#new_answer #answer_body').val('');
 <% else %>

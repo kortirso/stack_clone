@@ -1,5 +1,6 @@
 class AnswersController < ApplicationController
     include VoteableController
+    include CommentableController
 
     before_action :authenticate_user!
     before_action :answer_find, only: [:destroy, :update, :best]
@@ -8,7 +9,9 @@ class AnswersController < ApplicationController
     def create
         @answer = @question.answers.new(answer_params)
         @answer.user = current_user
-        @answer.save
+        if @answer.save
+            PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: @answer.to_json
+        end
     end
 
     def destroy

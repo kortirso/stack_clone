@@ -230,4 +230,22 @@ RSpec.describe AnswersController, type: :controller do
             end
         end
     end
+
+    describe 'POST #comment_add' do
+        let!(:answer) { create :answer }
+
+        context 'Unauthorized user' do
+            it 'cant add comment' do
+                expect { post :comment_add, question_id: answer.question, id: answer, comment: attributes_for(:comment_for_answer), format: :json }.to_not change(Comment, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+
+            it 'can add comment' do
+                expect { post :comment_add, question_id: answer.question, id: answer, comment: attributes_for(:comment_for_answer), format: :json }.to change(answer.comments, :count)
+            end
+        end
+    end
 end

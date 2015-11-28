@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
     include VoteableController
+    include CommentableController
 
     before_action :authenticate_user!, except: [:index, :show]
     before_action :question_find, only: [:show, :update, :destroy]
@@ -23,6 +24,7 @@ class QuestionsController < ApplicationController
         @question = Question.new(question_params)
         @question.user = current_user
         if @question.save
+            PrivatePub.publish_to "/questions", question: @question.to_json
             redirect_to @question, notice: 'Question save'
         else
             noticer = ''

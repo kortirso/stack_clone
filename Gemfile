@@ -18,7 +18,9 @@ gem 'devise'
 gem 'simple_form'
 gem 'carrierwave'
 gem 'remotipart'
-gem "cocoon"
+gem 'cocoon'
+gem 'private_pub'
+gem 'thin'
 
 group :development, :test do
   gem 'byebug'
