@@ -6,6 +6,8 @@
         ul
             - answer.attachments.each do |attachment|
                 = render 'answers/attachment', attachment: attachment, answer: answer
+    .votes_block
+        = render partial: 'votes/votes_block', locals: { voted_object: answer }
     p.edit-form
         = simple_form_for [@question, answer], remote: true do |f|
             = f.input :body
