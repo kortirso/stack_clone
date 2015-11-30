@@ -1,15 +1,12 @@
-module CommentableController
-    extend ActiveSupport::Concern
+class CommentsController < ApplicationController
+    before_action :authenticate_user!
+    before_action :find_comment_object, only: :create
 
-    included do
-        before_action :find_comment_object, only: :comment_add
-    end
-
-    def comment_add
+    def create
         if current_user
             @comment = @comment_object.comments.new(comment_params)
             @comment.user = current_user
-            if @comment.save!
+            if @comment.save
                 if @comment_object.kind_of?(Question)
                     PrivatePub.publish_to "/questions/#{@comment_object.id}/comments", comment: @comment.to_json
                 else
@@ -22,7 +19,7 @@ module CommentableController
 
     private
     def find_comment_object
-        @comment_object = controller_name.classify.constantize.find(params[:id])
+        @comment_object = params[:commentable].classify.constantize.find(params[(params[:commentable].singularize + '_id').to_sym])
     end
 
     def comment_params

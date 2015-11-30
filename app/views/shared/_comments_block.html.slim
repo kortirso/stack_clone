@@ -7,15 +7,10 @@ ul
             li.comment= comment.body
 - if current_user
     - if comment_object.kind_of?(Question)
-        = simple_form_for [@question, Comment.new], url: comment_add_question_path(@question.id), remote: true do |f|
+        = simple_form_for [comment_object, comment_object.comments.new], remote: true do |f|
             = f.input :body
             = f.submit 'Add comment'
     - else
-        = simple_form_for [@question, comment_object, Comment.new], url: comment_add_question_answer_path(@question.id, comment_object.id), remote: true do |f|
+        = simple_form_for [@question, comment_object, comment_object.comments.new], remote: true do |f|
             = f.input :body
             = f.submit 'Add comment'
-
-
-
-
-

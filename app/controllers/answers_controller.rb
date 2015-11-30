@@ -1,6 +1,5 @@
 class AnswersController < ApplicationController
     include VoteableController
-    include CommentableController
 
     before_action :authenticate_user!
     before_action :answer_find, only: [:destroy, :update, :best]
