@@ -19,7 +19,11 @@ class CommentsController < ApplicationController
 
     private
     def find_comment_object
-        @comment_object = params[:commentable].classify.constantize.find(params[(params[:commentable].singularize + '_id').to_sym])
+        @comment_object = params[:commentable].classify.constantize.find(params[commentable_id])
+    end
+
+    def commentable_id
+        (params[:commentable].singularize + '_id').to_sym
     end
 
     def comment_params
