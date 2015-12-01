@@ -70,7 +70,7 @@ RSpec.feature "Question management", :type => :feature do
                 fill_in 'question_title', with: question_1.title
                 click_on 'Ask'
 
-                expect(page).to have_content 'Error, question doesnot save'
+                expect(page).to have_css '#new_question .has-error'
             end
         end
 

@@ -24,10 +24,6 @@ RSpec.describe QuestionsController, type: :controller do
             expect(assigns(:answer)).to be_a_new(Answer)
         end
 
-        it 'builds new attachment for answer' do
-            expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-        end
-
         it 'renders show view' do
             expect(response).to render_template :show
         end
@@ -39,10 +35,6 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'assigns a new question to @question' do
             expect(assigns(:question)).to be_a_new(Question)
-        end
-
-        it 'builds new attachment for question' do
-            expect(assigns(:question).attachments.first).to be_a_new(Attachment)
         end
 
         it 'renders new view' do
@@ -73,7 +65,7 @@ RSpec.describe QuestionsController, type: :controller do
             it 're-render new view' do
                 post :create, question: attributes_for(:invalid_question)
 
-                expect(response).to redirect_to questions_path
+                expect(response).to render_template :new
             end
         end
     end
@@ -147,7 +139,7 @@ RSpec.describe QuestionsController, type: :controller do
             it 'redirects to questions_path' do
                 delete :destroy, id: question_2
 
-                expect(response).to redirect_to questions_path
+                expect(response).to redirect_to question_path(question_2)
             end
         end
     end
