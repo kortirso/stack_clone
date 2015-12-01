@@ -7,8 +7,11 @@ Rails.application.routes.draw do
             post 'devote'
         end
     end
-    resources :questions, concerns: :voteable do
-        resources :answers, concerns: :voteable
+    resources :questions, concerns: [:voteable] do
+        resources :comments, only: :create, defaults: {commentable: 'questions'}
+        resources :answers, concerns: [:voteable] do
+            resources :comments, only: :create, defaults: {commentable: 'answers'}
+        end
         get 'best/:id' => 'answers#best', as: 'best'
     end
     root to: 'questions#index'

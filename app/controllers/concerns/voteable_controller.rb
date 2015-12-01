@@ -15,7 +15,7 @@ module VoteableController
 
     def devote
         if @vote_object.devote(current_user)
-            render json: { voted_id: @vote_object.id, message: render_to_string(partial: 'votes/votes_block', locals: { voted_object: @vote_object }) }
+            render json: { voted_id: @vote_object.id, message: render_to_string(partial: 'shared/votes_block', locals: { voted_object: @vote_object }) }
         else
             render json: { status: :unprocessable_entity }
         end
@@ -25,7 +25,7 @@ module VoteableController
     def vote(value)
         if current_user.id != @vote_object.user_id
             @vote_object.vote(value, current_user)
-            render json: { voted_id: @vote_object.id, message: render_to_string(partial: 'votes/votes_block', locals: { voted_object: @vote_object }) }
+            render json: { voted_id: @vote_object.id, message: render_to_string(partial: 'shared/votes_block', locals: { voted_object: @vote_object }) }
         else
             render json: { status: :unprocessable_entity }
         end

@@ -1,7 +1,7 @@
 FactoryGirl.define do
     factory :question do
-        title "Title"
-        body "Body"
+        title "Test question title"
+        body "Test question body"
         association :user
     end
     factory :invalid_question, class: 'Question' do

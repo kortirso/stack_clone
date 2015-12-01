@@ -71,13 +71,10 @@ body::-webkit-scrollbar-thumb {
     display: none;
 }
 
-#answers {
-    .answer:nth-child(2) {
-        #best_answer {
-            font-weight: 600;
-        }
-    }
+#best_answer {
+    font-weight: 600;
 }
+
 
 .remove_question_attachment, .remove_answer_attachment {
     margin: 0 5px;

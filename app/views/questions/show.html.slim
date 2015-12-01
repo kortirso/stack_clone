@@ -1,6 +1,6 @@
 #question
     = render 'question'
-#answers
+#answers data={question: "#{@question.id}", user: "#{current_user.id if current_user}"}
     = render 'answer'
 - if current_user
     p Put your answer for this question
@@ -11,3 +11,7 @@
              = render 'attachments/attachment_fields', f: attachment
         .links= link_to_add_association 'Add file', f, :attachments, partial: 'attachments/attachment_fields'
         p= f.submit 'Answer', class: 'btn btn-default'
+
+= subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/questions/#{@question.id}/comments"
+= subscribe_to "/questions/#{@question.id}/answers/comments"

@@ -1,0 +1,16 @@
+= 'Comments'
+ul
+    - if comment_object.comments.size == 0
+        #no_comment= 'No comments'
+    - else
+        - comment_object.comments.order(id: :asc).each do |comment|
+            li.comment= comment.body
+- if current_user
+    - if comment_object.kind_of?(Question)
+        = simple_form_for [comment_object, comment_object.comments.new], remote: true do |f|
+            = f.input :body
+            = f.submit 'Add comment'
+    - else
+        = simple_form_for [@question, comment_object, comment_object.comments.new], remote: true do |f|
+            = f.input :body
+            = f.submit 'Add comment'
