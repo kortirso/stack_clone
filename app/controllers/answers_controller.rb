@@ -18,10 +18,7 @@ class AnswersController < ApplicationController
     end
 
     def update
-        if @answer.user_id == current_user.id
-            @answer.attachments.each { |a| a.save! }
-            @answer.update(answer_params)
-        end
+        @answer.update(answer_params) if @answer.user_id == current_user.id
         respond_with @answer
     end
 
