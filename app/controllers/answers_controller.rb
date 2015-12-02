@@ -2,27 +2,24 @@ class AnswersController < ApplicationController
     include VoteableController
 
     before_action :authenticate_user!
-    before_action :answer_find, only: [:destroy, :update, :best]
+    before_action :answer_find, only: [:destroy, :best]
+    before_action :answer_update, only: :update
     before_action :question_find, only: [:create, :best]
+    after_action :publish_answer, only: :create
+
+    respond_to :js
 
     def create
-        @answer = @question.answers.new(answer_params)
-        @answer.user = current_user
-        if @answer.save
-            PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: @answer.to_json
-        end
+        respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
     end
 
     def destroy
-        @answer.destroy if @answer.user_id == current_user.id
+        @answer.user_id == current_user.id ? respond_with(@answer.destroy) : respond_with(@answer)
     end
 
     def update
-        if @answer.user_id == current_user.id
-            @answer.attachments.each { |a| a.save! }
-            @answer.update(answer_params)
-            @question = @answer.question
-        end
+        @answer.update(answer_params) if @answer.user_id == current_user.id
+        respond_with @answer
     end
 
     def best
@@ -32,10 +29,20 @@ class AnswersController < ApplicationController
     private
     def answer_find
         @answer = Answer.find(params[:id])
+        @question = @answer.question
+    end
+
+    def answer_update
+        @answer = Answer.find(params[:id])
+        @question = @answer.question
     end
 
     def question_find
         @question = Question.find(params[:question_id])
+    end
+
+    def publish_answer
+        PrivatePub.publish_to "/questions/#{@question.id}/answers", answer: @answer.to_json if @answer.valid?
     end
 
     def answer_params

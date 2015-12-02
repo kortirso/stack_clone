@@ -7,7 +7,7 @@
     = simple_form_for [@question, @answer], remote: true do |f|
         p= f.text_field :body
         p= f.hidden_field :question_id, value: @question.id
-        p= f.simple_fields_for :attachments do |attachment|
+        p= f.simple_fields_for :attachments, @answer.attachments.build do |attachment|
              = render 'attachments/attachment_fields', f: attachment
         .links= link_to_add_association 'Add file', f, :attachments, partial: 'attachments/attachment_fields'
         p= f.submit 'Answer', class: 'btn btn-default'
