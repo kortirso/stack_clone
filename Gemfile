@@ -22,6 +22,11 @@ gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
 gem 'responders'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-vkontakte'
+gem 'omniauth-github'
+gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'byebug'

@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-    devise_for :users
+    devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+    devise_scope :user do
+        post '/finish_sign_up' => 'omniauth_callbacks#finish_sign_up', as: 'confirm_email'
+        get '/users/auth/failure' => 'omniauth_callbacks#failure'
+    end
     concern :voteable do
         member do
             post 'vote_plus'
