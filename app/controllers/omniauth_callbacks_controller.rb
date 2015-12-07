@@ -30,12 +30,19 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
             set_flash_message(:notice, :success, kind: "#{social}".capitalize) if is_navigational_format?
         else
             flash[:notice] = 'Email is needed'
-            render partial: 'shared/confirm_email', locals: { auth: request.env["omniauth.auth"] }
+            session[:provider] = env["omniauth.auth"].provider
+            session[:uid] = env["omniauth.auth"].uid
+            render partial: 'shared/confirm_email', locals: { auth: env["omniauth.auth"] }
         end
     end
 
     # либо передаются данные с соцсети с email, либо данные с соцсети + email из формы
     def get_omniauth
-        env["omniauth.auth"] || OmniAuth::AuthHash.new(params[:auth])
+        if env["omniauth.auth"]
+            auth = env["omniauth.auth"]
+        else
+            auth = OmniAuth::AuthHash.new(provider: session[:provider], uid: session[:uid], info: { email: params[:user][:email] })
+        end
+        auth
     end
 end

@@ -75,7 +75,7 @@ RSpec.feature "Omniauth management", :type => :feature do
 
             expect(page).to have_content('Fill form with your email to finish sign_in process')
 
-            fill_in 'auth_info_email', with: 'test@gmail.com'
+            fill_in 'user_email', with: 'test@gmail.com'
             click_on 'Send Email'
 
             expect(page).to have_content('test@gmail.com')
