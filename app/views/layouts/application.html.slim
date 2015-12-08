@@ -28,4 +28,7 @@ html
                             p= f.input :password, required: true, label: false, placeholder: 'Password'
                             p= f.input :password_confirmation, autocomplete: 'off', required: true, label: false, placeholder: 'Password Confirm'
                             p=  f.button :submit, 'Sign Up', class: 'btn btn-primary', id: 'registration'
+                    #socials
+                        p= 'Through Socials'
+                        p= render 'shared/socials'
                 #notice= notice

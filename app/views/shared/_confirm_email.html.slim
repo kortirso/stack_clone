@@ -1,0 +1,4 @@
+h3 Fill form with your email to finish sign_in process
+p= form_tag confirm_email_path, method: :post do
+    p= email_field 'user', :email, placeholder: 'Enter email'
+    p= submit_tag 'Submit', value: 'Send Email'

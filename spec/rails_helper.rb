@@ -35,6 +35,7 @@ RSpec.configure do |config|
     config.include Capybara::DSL
 
     config.extend ControllerMacros, type: :controller
+    config.include OmniauthMacros
 
     include Warden::Test::Helpers
     Warden.test_mode!
