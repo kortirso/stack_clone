@@ -136,10 +136,10 @@ RSpec.describe QuestionsController, type: :controller do
                 expect { delete :destroy, id: question_2 }.to_not change(Question, :count)
             end
 
-            it 'redirects to questions_path' do
+            it 'redirects to root_path' do
                 delete :destroy, id: question_2
 
-                expect(response).to redirect_to question_path(question_2)
+                expect(response).to redirect_to root_path
             end
         end
     end

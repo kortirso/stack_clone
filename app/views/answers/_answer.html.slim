@@ -19,8 +19,9 @@
                 .links= link_to_add_association 'Add file', f, :attachments, partial: 'attachments/attachment_fields'
                 = f.submit 'Save', class: 'btn btn-default'
                 = link_to 'Cancel', '', class: 'cancel_edit_answer btn btn-default'
-        - if current_user && current_user.id == answer.user_id
+        - if can?(:update, answer)
             = link_to 'Edit answer', '', class: 'edit_answer_btn btn btn-sm btn-warning', remote: true, id: "#{answer.id}"
+        - if can?(:destroy, answer)
             = link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, class: 'delete_answer btn btn-sm btn-warning', remote: true
-        - if current_user && current_user.id == @question.user_id && answer.best == false
+        - if can?(:best, answer) && answer.best == false
             = link_to 'Set best', question_best_path(@question, answer), class: 'btn btn-sm btn-success best_button', remote: true, id: "set_best_#{answer.id}"
