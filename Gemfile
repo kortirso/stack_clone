@@ -28,6 +28,7 @@ gem 'omniauth-vkontakte'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
 gem 'cancancan'
+gem 'doorkeeper'
 
 group :development, :test do
   gem 'byebug'
@@ -42,4 +43,5 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'json_spec'
 end
