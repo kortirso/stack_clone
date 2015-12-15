@@ -5,7 +5,7 @@ ul
     - else
         - comment_object.comments.order(id: :asc).each do |comment|
             li.comment= comment.body
-- if current_user
+- if can?(:create, Comment)
     - if comment_object.kind_of?(Question)
         = simple_form_for [comment_object, comment_object.comments.new], remote: true do |f|
             = f.input :body

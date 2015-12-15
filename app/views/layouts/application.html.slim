@@ -16,7 +16,7 @@ html
                     p= link_to 'Logoff', destroy_user_session_path, method: :delete, class: 'btn btn-sm btn-danger', id: 'destroy'
                 - else
                     #login
-                        p Authorization
+                        p Authentification
                         = simple_form_for(User.new, as: :user, url: session_path(:user)) do |f|
                             p= f.input :email, autofocus: true, label: false
                             p= f.input :password, autocomplete: 'off', label: false

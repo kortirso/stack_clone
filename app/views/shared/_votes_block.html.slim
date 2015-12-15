@@ -1,5 +1,5 @@
 = "Оценка #{voted_object.votes_calc}"
-- if current_user && voted_object.user_id != current_user.id
+- if can?(:vote, voted_object)
     - if voted_object.kind_of?(Question)
         - if voted_object.is_voted?(current_user)
             =  link_to "Your vote: #{voted_object.get_vote_value(current_user)}, remove vote?", devote_question_path(voted_object), remote: true, method: :post, class: 'btn btn-default btn-devote'

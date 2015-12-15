@@ -2,7 +2,7 @@
     = render 'question'
 #answers data={question: "#{@question.id}", user: "#{current_user.id if current_user}"}
     = render 'answer'
-- if current_user
+- if can?(:create, Answer)
     p Put your answer for this question
     = simple_form_for [@question, @answer], remote: true do |f|
         p= f.text_field :body

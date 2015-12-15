@@ -22,8 +22,13 @@ RSpec.describe Ability, type: :model do
     end
 
     describe 'for user' do
-        let(:user) { create :user }
-        let(:other_user) { create :user }
+        let!(:user) { create :user }
+        let!(:other_user) { create :user }
+        let!(:question) { create :question, user: user }
+        let!(:other_question) { create :question, user: other_user }
+        let!(:answer) { create :answer, question: question, user: user }
+        let!(:other_answer) { create :answer, question: other_question, user: other_user }
+        let!(:attachment) { create :attachment, attachable: question }
 
         it { should be_able_to :read, :all }
 
@@ -31,15 +36,26 @@ RSpec.describe Ability, type: :model do
         it { should be_able_to :create, Answer }
         it { should be_able_to :create, Comment }
 
-        it { should be_able_to :update, create(:question, user: user), user: user }
-        it { should be_able_to :update, create(:answer, user: user), user: user }
-        it { should_not be_able_to :update, create(:question, user: other_user), user: user }
-        it { should_not be_able_to :update, create(:answer, user: other_user), user: user }
+        it { should be_able_to :update, question, user: user }
+        it { should be_able_to :update, answer, user: user }
+        it { should_not be_able_to :update, other_question, user: user }
+        it { should_not be_able_to :update, other_answer, user: user }
 
-        it { should be_able_to :destroy, create(:question, user: user), user: user }
-        it { should be_able_to :destroy, create(:answer, user: user), user: user }
-        it { should_not be_able_to :destroy, create(:question, user: other_user), user: user }
-        it { should_not be_able_to :destroy, create(:answer, user: other_user), user: user }
+        it { should be_able_to :destroy, question, user: user }
+        it { should be_able_to :destroy, answer, user: user }
+        it { should_not be_able_to :destroy, other_question, user: user }
+        it { should_not be_able_to :destroy, other_answer, user: user }
+
+        it { should be_able_to :manage, attachment, user: user }
+        it { should_not be_able_to :manage, create(:attachment) }
+
+        it { should be_able_to :vote, other_question, user: user }
+        it { should_not be_able_to :vote, question, user: user }
+        it { should be_able_to :vote, other_answer, user: user }
+        it { should_not be_able_to :vote, answer, user: user }
+
+        it { should be_able_to :best, answer, user: user }
+        it { should_not be_able_to :best, create(:answer), user: user }
 
         it { should_not be_able_to :manage, :all }
     end

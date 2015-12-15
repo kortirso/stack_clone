@@ -25,5 +25,13 @@ class Ability
         can :create, [Question, Answer, Comment]
         can :update, [Question, Answer], user: user
         can :destroy, [Question, Answer], user: user
+
+        can :manage, Attachment, attachable: { user: user }
+
+        alias_action :vote_plus, :vote_minus, :devote, to: :vote
+        can :vote, [Question, Answer]
+        cannot :vote, [Question, Answer], user: user
+
+        can :best, Answer, question: { user: user }
     end
 end

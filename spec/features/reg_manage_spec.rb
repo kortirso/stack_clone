@@ -26,7 +26,7 @@ RSpec.feature "Registration management", :type => :feature do
 
                 click_button 'registration'
 
-                expect(page).to have_content 'Authorization'
+                expect(page).to have_content 'Authentification'
             end
         end
 
@@ -53,7 +53,7 @@ RSpec.feature "Registration management", :type => :feature do
 
                 click_button 'authorization'
 
-                expect(page).to have_content 'Authorization'
+                expect(page).to have_content 'Authentification'
             end
 
             it 'when he not registered' do
@@ -64,7 +64,7 @@ RSpec.feature "Registration management", :type => :feature do
 
                 click_button 'authorization'
 
-                expect(page).to have_content 'Authorization'
+                expect(page).to have_content 'Authentification'
             end
         end
     end
@@ -77,7 +77,7 @@ RSpec.feature "Registration management", :type => :feature do
             visit root_path
             click_on 'destroy'
 
-            expect(page).to have_content 'Authorization'
+            expect(page).to have_content 'Authentification'
         end
     end
 end
