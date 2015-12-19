@@ -1,4 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
+    authorize_resource Question
+
     def index
         @questions = Question.all
         respond_with @questions
@@ -10,7 +12,8 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     end
 
     def create
-        respond_with(@question = Question.create(question_params.merge(user: current_resource_owner)))
+        @question = current_resource_owner.questions.create(question_params)
+        respond_with @question
     end
 
     private

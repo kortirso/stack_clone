@@ -17,7 +17,8 @@ describe 'Answers API' do
         end
 
         context 'authorized' do
-            let(:access_token) { create :access_token }
+            let(:me) { create :user }
+            let(:access_token) { create :access_token, resource_owner_id: me.id }
             let!(:answers) { create_list(:answer, 2, question: question) }
             let(:answer) { answers.last }
 
@@ -59,7 +60,8 @@ describe 'Answers API' do
         end
 
         context 'authorized' do
-            let(:access_token) { create :access_token }
+            let(:me) { create :user }
+            let(:access_token) { create :access_token, resource_owner_id: me.id }
 
             before { get "/api/v1/questions/#{question.id}/answers/#{answer.id}", format: :json, access_token: access_token.token }
 
@@ -119,8 +121,8 @@ describe 'Answers API' do
         end
 
         context 'authorized' do
-            let(:access_token) { create :access_token }
-            let(:user) { User.find(access_token.resource_owner_id) }
+            let(:me) { create :user }
+            let(:access_token) { create :access_token, resource_owner_id: me.id }
 
             context 'with valid attributes' do
                 it 'returns 200 status code' do
@@ -134,12 +136,12 @@ describe 'Answers API' do
                 end
 
                 it 'belongs to current user' do
-                    expect { post "/api/v1/questions/#{question.id}/answers", answer: attributes_for(:answer), format: :json, access_token: access_token.token }.to change(user.answers, :count).by(1)
+                    expect { post "/api/v1/questions/#{question.id}/answers", answer: attributes_for(:answer), format: :json, access_token: access_token.token }.to change(me.answers, :count).by(1)
                 end
             end
 
             context 'with invalid attributes' do
-                it 'doesnt returns 200 status code' do
+                it 'doesnt return 200 status code' do
                     post "/api/v1/questions/#{question.id}/answers", answer: attributes_for(:invalid_answer), format: :json, access_token: access_token.token
 
                     expect(response).to_not be_success

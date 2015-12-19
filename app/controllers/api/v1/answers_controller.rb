@@ -1,4 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
+    authorize_resource Answer
+
     before_action :question_find, only: [:index, :create]
 
     def index
@@ -13,11 +15,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
     def create
         @answer = @question.answers.create(answer_params.merge(user: current_resource_owner))
-        if @answer.valid?
-            render nothing: true
-        else
-            respond_with @answer
-        end
+        respond_with @answer, location: -> { api_v1_question_answer_path(@question, @answer) }
     end
 
     private

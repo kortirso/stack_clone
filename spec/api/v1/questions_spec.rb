@@ -15,7 +15,8 @@ describe 'Questions API' do
         end
 
         context 'authorized' do
-            let(:access_token) { create :access_token }
+            let(:me) { create :user }
+            let(:access_token) { create :access_token, resource_owner_id: me.id }
             let!(:questions) { create_list(:question, 2) }
             let(:question) { questions.first }
             let!(:answer) { create :answer, question: question }
@@ -75,7 +76,8 @@ describe 'Questions API' do
         end
 
         context 'authorized' do
-            let(:access_token) { create :access_token }
+            let(:me) { create :user }
+            let(:access_token) { create :access_token, resource_owner_id: me.id }
 
             before { get "/api/v1/questions/#{question.id}", format: :json, access_token: access_token.token }
 
@@ -147,8 +149,8 @@ describe 'Questions API' do
         end
 
         context 'authorized' do
-            let(:access_token) { create :access_token }
-            let(:user) { User.find(access_token.resource_owner_id) }
+            let(:me) { create :user }
+            let(:access_token) { create :access_token, resource_owner_id: me.id }
 
             context 'with valid attributes' do
                 it 'returns 200 status code' do
@@ -158,12 +160,12 @@ describe 'Questions API' do
                 end
 
                 it 'saves the new question in the DB and it belongs to current user' do
-                    expect { post "/api/v1/questions", question: attributes_for(:question), format: :json, access_token: access_token.token }.to change(user.questions, :count).by(1)
+                    expect { post "/api/v1/questions", question: attributes_for(:question), format: :json, access_token: access_token.token }.to change(me.questions, :count).by(1)
                 end
             end
 
             context 'with invalid attributes' do
-                it 'doesnt returns 200 status code' do
+                it 'doesnt return 200 status code' do
                     post "/api/v1/questions", question: attributes_for(:invalid_question), format: :json, access_token: access_token.token
 
                     expect(response).to_not be_success
