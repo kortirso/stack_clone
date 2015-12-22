@@ -1,6 +1,6 @@
 describe 'Profile API' do
     describe 'GET /me' do
-        it_behaves_like 'API  Authenticable'
+        it_behaves_like 'API Authenticable'
 
         context 'authorized' do
             let(:me) { create :user }
@@ -31,7 +31,7 @@ describe 'Profile API' do
     end
 
     describe 'GET /all' do
-        it_behaves_like 'API  Authenticable'
+        it_behaves_like 'API Authenticable'
 
         context 'authorized' do
             let!(:me) { create :user }

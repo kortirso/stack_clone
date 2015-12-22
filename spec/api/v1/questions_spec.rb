@@ -1,6 +1,6 @@
 describe 'Questions API' do
     describe 'GET /index' do
-        it_behaves_like 'API  Authenticable'
+        it_behaves_like 'API Authenticable'
 
         context 'authorized' do
             let(:me) { create :user }
@@ -53,7 +53,7 @@ describe 'Questions API' do
         let!(:comment) { create :comment, commentable: question }
         let!(:attachment) { create :attachment, attachable: question }
 
-        it_behaves_like 'API  Authenticable'
+        it_behaves_like 'API Authenticable'
 
         context 'authorized' do
             let(:me) { create :user }
@@ -118,7 +118,7 @@ describe 'Questions API' do
     end
 
     describe 'POST /create' do
-        it_behaves_like 'API  Authenticable'
+        it_behaves_like 'API Authenticable'
 
         context 'authorized' do
             let(:me) { create :user }
