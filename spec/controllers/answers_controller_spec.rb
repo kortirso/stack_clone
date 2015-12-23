@@ -25,6 +25,11 @@ RSpec.describe AnswersController, type: :controller do
 
                     expect(response).to render_template :create
                 end
+
+                it_behaves_like 'Publishable' do
+                    let(:path) { "/questions/#{question.id}/answers" }
+                    let(:object) { post :create, answer: attributes_for(:answer), question_id: question, format: :js }
+                end
             end
 
             context 'with invalid attributes' do

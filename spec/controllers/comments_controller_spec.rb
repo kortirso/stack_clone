@@ -17,12 +17,26 @@ RSpec.describe CommentsController, type: :controller do
             sign_in_user
 
             context 'can add comment with valid attributes' do
-                it 'to question' do
-                    expect { post :create, question_id: question, comment: attributes_for(:comment_for_question), commentable: 'questions', format: :js }.to change(question.comments, :count)
+                context 'to question' do
+                    it 'and it increase question comments' do
+                        expect { post :create, question_id: question, comment: attributes_for(:comment_for_question), commentable: 'questions', format: :js }.to change(question.comments, :count)
+                    end
+
+                    it_behaves_like 'Publishable' do
+                        let(:path) { "/questions/#{question.id}/comments" }
+                        let(:object) { post :create, question_id: question, comment: attributes_for(:comment_for_question), commentable: 'questions', format: :js }
+                    end
                 end
 
-                it 'to answer' do
-                    expect { post :create, question_id: question, answer_id: answer, comment: attributes_for(:comment_for_answer), commentable: 'answers', format: :js }.to change(answer.comments, :count)
+                context 'to answer' do
+                    it 'and it increase answer comments' do
+                        expect { post :create, question_id: question, answer_id: answer, comment: attributes_for(:comment_for_answer), commentable: 'answers', format: :js }.to change(answer.comments, :count)
+                    end
+
+                    it_behaves_like 'Publishable' do
+                        let(:path) { "/questions/#{answer.question_id}/answers/comments" }
+                        let(:object) { post :create, question_id: question, answer_id: answer, comment: attributes_for(:comment_for_answer), commentable: 'answers', format: :js }
+                    end
                 end
             end
 
