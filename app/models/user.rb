@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
         user.identities.create(provider: auth.provider, uid: auth.uid) # создается авторизация
         user
     end
+
+    def self.send_daily_digest
+        SendDailyDigestJob.perform_later(Question.today)
+    end
 end

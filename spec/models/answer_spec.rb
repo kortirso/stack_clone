@@ -9,4 +9,15 @@ RSpec.describe Answer, type: :model do
     it { should belong_to :question }
 
     it_behaves_like 'voteable'
+
+    describe '.send_about_create' do
+        let(:user) { create :user }
+        let(:question) { create :question, user: user }
+        subject { build :answer, question: question, user: user }
+
+        it 'should perform_later job' do
+            expect(SendAboutCreateJob).to receive(:perform_later).with(subject)
+            subject.save!
+        end
+    end
 end
