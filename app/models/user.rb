@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
     has_many :questions
     has_many :answers
     has_many :identities
+    has_many :subscribes
 
     def self.find_for_oauth(auth)
         identity = Identity.find_for_oauth(auth)

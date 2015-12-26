@@ -13,11 +13,19 @@ RSpec.describe Answer, type: :model do
     describe '.send_about_create' do
         let(:user) { create :user }
         let(:question) { create :question, user: user }
+        let(:subscribe) { create :subscribe, question: question, user: user }
         subject { build :answer, question: question, user: user }
 
-        it 'should perform_later job' do
-            expect(SendAboutCreateJob).to receive(:perform_later).with(subject)
-            subject.save!
+        context 'should' do
+            it 'perform_later job SendAboutCreate' do
+                expect(SendAboutCreateJob).to receive(:perform_later).with(subject)
+                subject.save!
+            end
+
+            it 'perform_later job SendToQuestionSubscribers' do
+                expect(SendToQuestionSubscribersJob).to receive(:perform_later).with(question)
+                subject.save!
+            end
         end
     end
 end

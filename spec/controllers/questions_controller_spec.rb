@@ -260,4 +260,59 @@ RSpec.describe QuestionsController, type: :controller do
             end
         end
     end
+
+    describe 'POST #subscribe' do
+        context 'Unauthorized user' do
+            let(:question) { create :question }
+
+            it 'cant subscribe for question' do
+                expect { post :subscribe, id: question, format: :js }.to_not change(Subscribe, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+            let!(:question) { create :question, user: @current_user }
+
+            it 'can subscribe for any question' do
+                expect { post :subscribe, id: question, format: :js }.to change(question.subscribes, :count)
+            end
+
+            it 'and it belongs_to current user' do
+                expect { post :subscribe, id: question, format: :js }.to change(@current_user.subscribes, :count)
+            end
+
+            it 'but he cant subscribe twice' do
+                create :subscribe, question: question, user: @current_user
+                post :subscribe, id: question, format: :js
+
+                expect(question.subscribes.count).to eq 1
+            end
+        end
+    end
+
+    describe 'POST #desubscribe' do
+        context 'Unauthorized user' do
+            let(:question) { create :question }
+
+            it 'cant desubscribe for question' do
+                expect { post :desubscribe, id: question, format: :js }.to_not change(Subscribe, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+            let!(:question) { create :question, user: @current_user }
+            let!(:other_question) { create :question, user: @current_user }
+            let!(:subscribe) { create :subscribe, question: question, user: @current_user }
+
+            it 'cant desubscribe from question without his subscribing' do
+                expect { post :desubscribe, id: other_question, format: :js }.to_not change(other_question.subscribes, :count)
+            end
+
+            it 'can desubscribe for any question with his subscribing' do
+                expect { post :desubscribe, id: question, format: :js }.to change(Subscribe, :count).by(-1)
+            end
+        end
+    end
 end

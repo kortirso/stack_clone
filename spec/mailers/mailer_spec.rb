@@ -32,4 +32,22 @@ RSpec.describe Mailer, type: :mailer do
             expect(mail.body.encoded).to match('Your question get answer')
         end
     end
+
+    describe 'notify_subscribers' do
+        let(:user) { create :user }
+        let(:question) { create :question }
+        let(:subscribe) { create :subscribe, question: question, user: user }
+        let(:mail) { Mailer.notify_subscribers(user, question) }
+
+        it 'renders the headers' do
+            expect(mail.subject).to eq('Question that you subscribed has new answer')
+            expect(mail.to).to eq(["#{user.email}"])
+            expect(mail.from).to eq(["from@example.com"])
+        end
+
+        it 'renders the body' do
+            expect(mail.body.encoded).to match('Question that you subscribed has new answer')
+            expect(mail.body.encoded).to match("#{question.title}")
+        end
+    end
 end

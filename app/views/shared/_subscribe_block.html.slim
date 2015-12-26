@@ -1,0 +1,8 @@
+- if can?(:subscribe, subscribe_object)
+    - if subscribe_object.is_subscribe?(current_user)
+        p.subscribe_text= "You subscribe for email notifications, remove subscribe?"
+        p=  link_to "Desubscribe", desubscribe_question_path(subscribe_object), remote: true, method: :post, class: 'btn btn-default btn-devote subscribe_link'
+    - else
+        p.subscribe_text= "Subscribe to question and get emails when users make answers"
+        p= link_to 'Subscribe', subscribe_question_path(subscribe_object), remote: true, method: :post, class: 'btn btn-default btn-vote subscribe_link'
+
