@@ -12,13 +12,13 @@ Rails.application.routes.draw do
             post 'devote'
         end
     end
-    concern :subscribe do
+    concern :subscribeable do
         member do
             post 'subscribe'
-            post 'desubscribe'
+            post 'unsubscribe'
         end
     end
-    resources :questions, concerns: [:voteable, :subscribe] do
+    resources :questions, concerns: [:voteable, :subscribeable] do
         resources :comments, only: :create, defaults: {commentable: 'questions'}
         resources :answers, concerns: [:voteable] do
             resources :comments, only: :create, defaults: {commentable: 'answers'}

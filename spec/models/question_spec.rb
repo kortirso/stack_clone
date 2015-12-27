@@ -9,4 +9,5 @@ RSpec.describe Question, type: :model do
     it { should have_many(:answers).dependent(:destroy) }
 
     it_behaves_like 'voteable'
+    it_behaves_like 'subscribeable'
 end

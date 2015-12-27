@@ -32,7 +32,7 @@ class Ability
         can :vote, [Question, Answer]
         cannot :vote, [Question, Answer], user: user
 
-        alias_action :subscribe, :desubscribe, to: :subs
+        alias_action :subscribe, :unsubscribe, to: :subs
         can :subs, [Question]
 
         can :best, Answer, question: { user: user }

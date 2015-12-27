@@ -4,12 +4,8 @@ class Mailer < ApplicationMailer
         mail to: user.email, subject: 'Today questions'
     end
 
-    def answer_create(answer)
-        mail to: answer.question.user.email, subject: 'You get answer for your question'
-    end
-
-    def notify_subscribers(user, question)
-        @question = question
+    def notify_subscribers(user, answer)
+        @answer = answer
         mail to: user.email, subject: 'Question that you subscribed has new answer'
     end
 end

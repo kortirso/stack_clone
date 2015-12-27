@@ -2,14 +2,14 @@ module Subscribeable
     extend ActiveSupport::Concern
 
     included do
-        has_many :subscribes, dependent: :destroy
+        has_many :subscribes, as: :subscribeable, dependent: :destroy
     end
 
     def is_subscribe?(user)
-        subscribes.find_by(user: user) ? true : false
+        subscribes.where(user: user).exists?
     end
 
-    def desubscribe(user)
+    def unsubscribe(user)
         subscribe = subscribes.find_by(user: user)
         if subscribe
             subscribe.destroy
@@ -19,6 +19,6 @@ module Subscribeable
     end
 
     def subscribe(user)
-        subscribe = subscribes.find_or_create_by(user: user)
+        subscribes.find_or_create_by(user: user)
     end
 end

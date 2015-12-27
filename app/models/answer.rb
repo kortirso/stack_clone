@@ -21,7 +21,6 @@ class Answer < ActiveRecord::Base
 
     private
     def send_about_create
-        SendAboutCreateJob.perform_later(self)
-        SendToQuestionSubscribersJob.perform_later(self.question)
+        SendToQuestionSubscribersJob.perform_later(self)
     end
 end

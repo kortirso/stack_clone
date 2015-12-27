@@ -1,6 +1,6 @@
 class Subscribe < ActiveRecord::Base
     belongs_to :user
-    belongs_to :question
+    belongs_to :subscribeable, polymorphic: true
 
-    validates :user_id, :question_id, presence: true
+    validates :user_id, :subscribeable_id, presence: true
 end

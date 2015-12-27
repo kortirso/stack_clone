@@ -16,28 +16,12 @@ RSpec.describe Mailer, type: :mailer do
         end
     end
 
-    describe 'answer_create' do
-        let(:user) { create :user }
-        let(:question) { create :question, user: user }
-        let(:answer) { create :answer, user: user, question: question }
-        let(:mail) { Mailer.answer_create(answer) }
-
-        it 'renders the headers' do
-            expect(mail.subject).to eq('You get answer for your question')
-            expect(mail.to).to eq(["#{user.email}"])
-            expect(mail.from).to eq(["from@example.com"])
-        end
-
-        it 'renders the body' do
-            expect(mail.body.encoded).to match('Your question get answer')
-        end
-    end
-
     describe 'notify_subscribers' do
         let(:user) { create :user }
         let(:question) { create :question }
-        let(:subscribe) { create :subscribe, question: question, user: user }
-        let(:mail) { Mailer.notify_subscribers(user, question) }
+        let(:answer) { create :answer, user: user, question: question }
+        let(:subscribe) { create :subscribe, subscribeable: question, user: user }
+        let(:mail) { Mailer.notify_subscribers(user, answer) }
 
         it 'renders the headers' do
             expect(mail.subject).to eq('Question that you subscribed has new answer')
@@ -47,7 +31,8 @@ RSpec.describe Mailer, type: :mailer do
 
         it 'renders the body' do
             expect(mail.body.encoded).to match('Question that you subscribed has new answer')
-            expect(mail.body.encoded).to match("#{question.title}")
+            expect(mail.body.encoded).to match(question.title)
+            expect(mail.body.encoded).to match(answer.body)
         end
     end
 end
