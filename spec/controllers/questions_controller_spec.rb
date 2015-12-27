@@ -56,6 +56,10 @@ RSpec.describe QuestionsController, type: :controller do
                 expect(response).to redirect_to question_path(assigns(:question))
             end
 
+            it 'and question creator to subscribers of question' do
+                expect { post :create, question: attributes_for(:question) }.to change(Subscribe, :count).by(1)
+            end
+
             it_behaves_like 'Publishable' do
                 let(:path) { '/questions' }
                 let(:object) { post :create, question: attributes_for(:question) }
@@ -257,6 +261,60 @@ RSpec.describe QuestionsController, type: :controller do
 
             it 'cant devote for question without his vote' do
                 expect { post :devote, id: other_question }.to_not change(Vote, :count)
+            end
+        end
+    end
+
+    describe 'POST #subscribe' do
+        context 'Unauthorized user' do
+            let!(:question) { create :question }
+
+            it 'cant subscribe for question' do
+                expect { post :subscribe, id: question, format: :js }.to_not change(Subscribe, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+            let!(:question) { create :question }
+
+            it 'can subscribe for any question' do
+                expect { post :subscribe, id: question, format: :js }.to change(question.subscribes, :count)
+            end
+
+            it 'and it belongs_to current user' do
+                expect { post :subscribe, id: question, format: :js }.to change(@current_user.subscribes, :count)
+            end
+
+            it 'but he cant subscribe twice' do
+                create :subscribe, subscribeable: question, user: @current_user
+
+                expect { post :subscribe, id: question, format: :js }.to_not change(question.subscribes, :count)
+            end
+        end
+    end
+
+    describe 'POST #unsubscribe' do
+        let!(:question) { create :question }
+        let!(:other_question) { create :question }
+
+        context 'Unauthorized user' do
+            it 'cant unsubscribe for question' do
+                expect { post :unsubscribe, id: question, format: :js }.to_not change(Subscribe, :count)
+            end
+        end
+
+        context 'Authorized user' do
+            sign_in_user
+
+            it 'cant unsubscribe from question without his subscribing' do
+                expect { post :unsubscribe, id: other_question, format: :js }.to_not change(other_question.subscribes, :count)
+            end
+
+            it 'can unsubscribe for any question with his subscribing' do
+                create :subscribe, subscribeable: question, user: @current_user
+
+                expect { post :unsubscribe, id: question, format: :js }.to change(Subscribe, :count)
             end
         end
     end

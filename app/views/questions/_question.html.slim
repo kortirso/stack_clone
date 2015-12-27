@@ -8,6 +8,8 @@ p= @question.body
                     = link_to attachment.file.identifier, attachment.file.url
 .votes_block
     = render partial: 'shared/votes_block', locals: { voted_object: @question }
+#subscribe_block
+    = render partial: 'shared/subscribe_block', locals: { subscribe_object: @question }
 #question_comments
     = render partial: 'shared/comments_block', locals: { comment_object: @question }
 p

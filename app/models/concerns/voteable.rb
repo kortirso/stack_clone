@@ -15,7 +15,7 @@ module Voteable
     end
 
     def is_voted?(user)
-       votes.find_by(user: user) ? true : false
+       votes.where(user: user).exists?
     end
 
     def devote(user)

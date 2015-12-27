@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
     has_many :questions
     has_many :answers
     has_many :identities
+    has_many :subscribes
 
     def self.find_for_oauth(auth)
         identity = Identity.find_for_oauth(auth)
@@ -18,5 +19,9 @@ class User < ActiveRecord::Base
         user = User.create!(email: email, password: Devise.friendly_token[0,20]) unless user # если не было пользователя для этой авторизации, то создается пользователь
         user.identities.create(provider: auth.provider, uid: auth.uid) # создается авторизация
         user
+    end
+
+    def self.send_daily_digest
+        SendDailyDigestJob.perform_later(Question.today)
     end
 end
