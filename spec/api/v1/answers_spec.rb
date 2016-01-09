@@ -5,10 +5,10 @@ describe 'Answers API' do
         it_behaves_like 'API Authenticable'
 
         context 'authorized' do
-            let(:me) { create :user }
-            let(:access_token) { create :access_token, resource_owner_id: me.id }
-            let!(:answers) { create_list(:answer, 2, question: question) }
-            let(:answer) { answers.last }
+            let!(:me) { create :user }
+            let!(:access_token) { create :access_token, resource_owner_id: me.id }
+            let!(:answers) { create_list(:answer, 2, question: question, user: me) }
+            let(:answer) { answers.first }
 
             before { get "/api/v1/questions/#{question.id}/answers", format: :json, access_token: access_token.token }
 
