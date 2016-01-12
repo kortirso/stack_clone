@@ -6,9 +6,12 @@ html
         = javascript_include_tag 'application'
         = csrf_meta_tags
     body
+        = render 'shared/search_modal'
         .container
             .col-xs-9
-                p#root_path_button= link_to 'Main page', root_path
+                p#root_path_button
+                    = link_to 'Main page', root_path
+                    = link_to 'Search', '#search_form', 'data-toggle' => 'modal'
                 = yield
             .col-xs-3
                 - if current_user

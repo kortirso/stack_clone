@@ -11,4 +11,21 @@ class ApplicationController < ActionController::Base
     rescue_from CanCan::AccessDenied do |exception|
         redirect_to root_url
     end
+
+    def search
+        @objects = find_object(params[:search][:query], params[:search][:options].to_i)
+        render template: 'layouts/search'
+    end
+
+    private
+    def find_object(query, option)
+        case option
+            when 1 then objects = ThinkingSphinx.search query
+            when 2 then objects = Question.search query
+            when 3 then objects = Answer.search query
+            when 4 then objects = Comment.search query
+            else objects = ThinkingSphinx.search query
+        end
+        objects
+    end
 end

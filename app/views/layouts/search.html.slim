@@ -1,0 +1,12 @@
+p= "You try to find - #{params[:search][:query]}"
+p= "System find #{@objects.count} objects"
+- unless @objects.nil?
+    - @objects.each do |object|
+        .search_object
+            - if object.kind_of?(Question)
+                p= "Question title - #{object.title}"
+                p= "Question body - #{object.body}"
+            - elsif object.kind_of?(Answer)
+                p= "Answer body - #{object.body}"
+            - elsif object.kind_of?(Comment)
+                p= "Comment body - #{object.body}"
