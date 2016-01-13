@@ -2,10 +2,12 @@ require_relative 'feature_helper'
 require_relative 'sphinx_helper'
 
 RSpec.feature 'Search text', type: :feature do
+    let!(:user) { create :user }
     let!(:question) { create :question, body: 'job question' }
     let!(:answer) { create :answer, question: question, body: 'job answer' }
     let!(:comment) { create :comment, commentable: answer, body: 'job comment' }
-    let!(:other_question) { create :question, body: 'simple question' }
+    let!(:other_user) { create :user, email: 'other@email.com' }
+    let!(:other_question) { create :question, body: 'simple question', user: user }
     let!(:other_answer) { create :answer, question: other_question, body: 'simple answer' }
     let!(:other_comment) { create :comment, commentable: other_answer, body: 'simple comment' }
     before do
@@ -32,9 +34,11 @@ RSpec.feature 'Search text', type: :feature do
                 expect(page).to have_content "Question body - #{question.body}"
                 expect(page).to have_content "Answer body - #{answer.body}"
                 expect(page).to have_content "Comment body - #{comment.body}"
+                expect(page).to_not have_content "User email - #{user.email}"
                 expect(page).to_not have_content "Other question body - #{other_question.body}"
                 expect(page).to_not have_content "Other answer body - #{other_answer.body}"
                 expect(page).to_not have_content "Other comment body - #{other_comment.body}"
+                expect(page).to_not have_content "User email - #{other_user.email}"
             end
         end
 
@@ -49,9 +53,11 @@ RSpec.feature 'Search text', type: :feature do
                 expect(page).to have_content "Question body - #{question.body}"
                 expect(page).to_not have_content "Answer body - #{answer.body}"
                 expect(page).to_not have_content "Comment body - #{comment.body}"
+                expect(page).to_not have_content "User email - #{user.email}"
                 expect(page).to_not have_content "Other question body - #{other_question.body}"
                 expect(page).to_not have_content "Other answer body - #{other_answer.body}"
                 expect(page).to_not have_content "Other comment body - #{other_comment.body}"
+                expect(page).to_not have_content "User email - #{other_user.email}"
             end
         end
 
@@ -66,9 +72,11 @@ RSpec.feature 'Search text', type: :feature do
                 expect(page).to_not have_content "Question body - #{question.body}"
                 expect(page).to have_content "Answer body - #{answer.body}"
                 expect(page).to_not have_content "Comment body - #{comment.body}"
+                expect(page).to_not have_content "User email - #{user.email}"
                 expect(page).to_not have_content "Other question body - #{other_question.body}"
                 expect(page).to_not have_content "Other answer body - #{other_answer.body}"
                 expect(page).to_not have_content "Other comment body - #{other_comment.body}"
+                expect(page).to_not have_content "User email - #{other_user.email}"
             end
         end
 
@@ -83,9 +91,33 @@ RSpec.feature 'Search text', type: :feature do
                 expect(page).to_not have_content "Question body - #{question.body}"
                 expect(page).to_not have_content "Answer body - #{answer.body}"
                 expect(page).to have_content "Comment body - #{comment.body}"
+                expect(page).to_not have_content "User email - #{user.email}"
                 expect(page).to_not have_content "Other question body - #{other_question.body}"
                 expect(page).to_not have_content "Other answer body - #{other_answer.body}"
                 expect(page).to_not have_content "Other comment body - #{other_comment.body}"
+                expect(page).to_not have_content "User email - #{other_user.email}"
+            end
+        end
+
+        it 'for users objects', js: true do
+            within '#search_form' do
+                fill_in 'search_query', with: user.email
+                choose('At users')
+            end
+            click_on 'Start search'
+
+            within '#search_results' do
+                expect(page).to have_content "You try to find - #{user.email}"
+                expect(page).to have_content "You choose option - #5"
+                expect(page).to have_content 'System find 1 objects'
+                expect(page).to_not have_content "Question body - #{question.body}"
+                expect(page).to_not have_content "Answer body - #{answer.body}"
+                expect(page).to_not have_content "Comment body - #{comment.body}"
+                expect(page).to have_content "User email - #{user.email}"
+                expect(page).to_not have_content "Other question body - #{other_question.body}"
+                expect(page).to_not have_content "Other answer body - #{other_answer.body}"
+                expect(page).to_not have_content "Other comment body - #{other_comment.body}"
+                expect(page).to_not have_content "User email - #{other_user.email}"
             end
         end
 
@@ -99,9 +131,11 @@ RSpec.feature 'Search text', type: :feature do
                 expect(page).to have_content "Question body - #{question.body}"
                 expect(page).to have_content "Answer body - #{answer.body}"
                 expect(page).to have_content "Comment body - #{comment.body}"
+                expect(page).to_not have_content "User email - #{user.email}"
                 expect(page).to_not have_content "Other question body - #{other_question.body}"
                 expect(page).to_not have_content "Other answer body - #{other_answer.body}"
                 expect(page).to_not have_content "Other comment body - #{other_comment.body}"
+                expect(page).to_not have_content "User email - #{other_user.email}"
             end
         end
     end

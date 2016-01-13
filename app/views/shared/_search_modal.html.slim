@@ -6,5 +6,5 @@
             = simple_form_for :search, url: search_path, method: :get, role: 'search' do |f|
                 .modal-body
                     p= f.input :query, label: 'Query', required: false
-                    p= f.collection_radio_buttons :options, [[1, 'All objects'], [2, 'At questions'], [3, 'At answers'], [4, 'At comments']], :first, :last
+                    p= f.collection_radio_buttons :options, [[1, 'All objects'], [2, 'At questions'], [3, 'At answers'], [4, 'At comments'], [5, 'At users']], :first, :last
                     p= f.button :submit, 'Start search', class: 'btn btn-success'

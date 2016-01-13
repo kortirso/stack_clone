@@ -19,12 +19,14 @@ class ApplicationController < ActionController::Base
 
     private
     def find_object(query, option)
+        riddle_query = Riddle::Query.escape(query)
         case option
-            when 1 then objects = ThinkingSphinx.search query
-            when 2 then objects = Question.search query
-            when 3 then objects = Answer.search query
-            when 4 then objects = Comment.search query
-            else objects = ThinkingSphinx.search query
+            when 1 then objects = ThinkingSphinx.search riddle_query
+            when 2 then objects = Question.search riddle_query
+            when 3 then objects = Answer.search riddle_query
+            when 4 then objects = Comment.search riddle_query
+            when 5 then objects = User.search riddle_query
+            else objects = ThinkingSphinx.search riddle_query
         end
         objects
     end
