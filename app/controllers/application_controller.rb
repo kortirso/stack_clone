@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     end
 
     def search
-        @objects = find_object(params[:search][:query], params[:search][:options].to_i)
+        @objects = params[:search][:query].empty? ? nil : find_object(params[:search][:query], params[:search][:options].to_i)
         render template: 'layouts/search'
     end
 
