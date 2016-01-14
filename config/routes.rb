@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         post '/finish_sign_up' => 'omniauth_callbacks#finish_sign_up', as: 'confirm_email'
         get '/users/auth/failure' => 'omniauth_callbacks#failure'
     end
+    get 'search' => 'application#search', as: 'search'
     concern :voteable do
         member do
             post 'vote_plus'

@@ -8,7 +8,7 @@ describe 'Answers API' do
             let!(:me) { create :user }
             let!(:access_token) { create :access_token, resource_owner_id: me.id }
             let!(:answers) { create_list(:answer, 2, question: question, user: me) }
-            let(:answer) { answers.first }
+            let(:answer) { answers.last }
 
             before { get "/api/v1/questions/#{question.id}/answers", format: :json, access_token: access_token.token }
 

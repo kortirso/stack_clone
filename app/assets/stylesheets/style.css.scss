@@ -36,6 +36,7 @@ body::-webkit-scrollbar-thumb {
     a {
         color: #444;
         text-decoration: none;
+        margin: 0 10px;
 
         &:hover {
             color: #444;
@@ -98,4 +99,16 @@ body::-webkit-scrollbar-thumb {
         margin: 0 2px;
         width: 32px;
     }
+}
+
+#search_form {
+    p span {
+        display: block;
+    }
+}
+
+.search_object {
+    margin: 20px 0;
+    padding-top: 20px;
+    border-top: 1px solid #AAA;
 }

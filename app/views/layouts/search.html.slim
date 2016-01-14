@@ -1,0 +1,21 @@
+#search_results
+    p= "You try to find - #{params[:search][:query]}"
+    p= "You choose option - ##{params[:search][:options]}"
+    - if !@objects.nil?
+        p= "System find #{@objects.count} objects"
+        - @objects.each do |object|
+            .search_object
+                - if object.kind_of?(Question)
+                    p= "Question title - #{object.title}"
+                    p= "Question body - #{object.body}"
+                    p= "Question author - #{object.user.email}"
+                - elsif object.kind_of?(Answer)
+                    p= "Answer body - #{object.body}"
+                    p= "Question author - #{object.user.email}"
+                - elsif object.kind_of?(Comment)
+                    p= "Comment body - #{object.body}"
+                    p= "Question author - #{object.user.email}"
+                - elsif object.kind_of?(User)
+                    p= "User email - #{object.email}"
+    - else
+        p= "System doesnt find anything"
