@@ -71,6 +71,28 @@ namespace :sphinx do
             end
         end
     end
+
+    desc 'Stop sphinx'
+    task :stop do
+        on roles(:app) do
+            within release_path do
+                with rails_env: :production do
+                    execute :rake, 'ts:stop'
+                end
+            end
+        end
+    end
+
+    desc 'Start sphinx'
+    task :start do
+        on roles(:app) do
+            within release_path do
+                with rails_env: :production do
+                    execute :rake, 'ts:start'
+                end
+            end
+        end
+    end
 end
 
 after 'deploy:restart', 'private_pub:restart'
