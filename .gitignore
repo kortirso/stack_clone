@@ -3,6 +3,7 @@
 !/log/.keep
 /tmp
 /config/application.yml
+/config/private_pub.yml
 /public/uploads
 /config/*.sphinx.conf
 /db/sphinx
