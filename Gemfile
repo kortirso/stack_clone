@@ -37,6 +37,7 @@ gem 'sidetiq'
 gem 'whenever'
 gem 'mysql2'
 gem 'thinking-sphinx'
+gem 'redis-rails'
 
 group :development, :test do
   gem 'byebug'

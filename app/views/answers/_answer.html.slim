@@ -1,11 +1,12 @@
 .answer id="answer-#{answer.id}"
     - if answer.best
         p#best_answer Best answer!
-    p.answer_body= answer.body
-    .attachments
-        ul
-            - answer.attachments.each do |attachment|
-                = render 'answers/attachment', attachment: attachment, answer: answer
+    - cache answer do
+        p.answer_body= answer.body
+        .attachments
+            ul
+                - answer.attachments.each do |attachment|
+                    = render 'answers/attachment', attachment: attachment, answer: answer
     .votes_block
         = render partial: 'shared/votes_block', locals: { voted_object: answer }
     #answers_comments
