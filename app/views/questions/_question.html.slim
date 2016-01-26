@@ -1,11 +1,12 @@
-h2= @question.title
-p= @question.body
-.attachments
-    ul
-        - @question.attachments.each do |attachment|
-            - unless attachment.id.nil?
-                li id="attach-#{attachment.id}"
-                    = link_to attachment.file.identifier, attachment.file.url
+- cache @question do
+    h2= @question.title
+    p= @question.body
+    .attachments
+        ul
+            - @question.attachments.each do |attachment|
+                - unless attachment.id.nil?
+                    li id="attach-#{attachment.id}"
+                        = link_to attachment.file.identifier, attachment.file.url
 .votes_block
     = render partial: 'shared/votes_block', locals: { voted_object: @question }
 #subscribe_block
